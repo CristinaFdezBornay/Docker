@@ -1,0 +1,2 @@
+# Ex26
+docker service create -e OC_USERNAME=crfernan -e OC_PASSWD=passwd --name engineering-bay --replicas=2 --network overmind 42school/engineering-bay

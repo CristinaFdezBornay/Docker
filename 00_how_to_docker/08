@@ -1,0 +1,8 @@
+# Ex08
+docker run -it --rm alpine /bin/sh
+
+#	Note: the first time we run this command, docker will create the image alpine,
+#	on which it will run the container alpine. When we type the command [exit] on
+#	the terminal where we're running the container alpine, the container itself will
+#	be deleted (we chan check this on other terminal using [docker ps]), but the
+#	alpine image will remain.

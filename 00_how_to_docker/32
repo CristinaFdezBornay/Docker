@@ -1,0 +1,2 @@
+# Ex32
+docker rm --force $(docker ps -aq)

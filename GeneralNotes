@@ -1,0 +1,240 @@
+Friday, 19th April 2019.
+
+	First, we'll ensure that our installed version of Docker is at least 1.12.
+	To do so, we run the command [docker --version]. As said in the subject,
+	brew provides the latest version of docker, so we can update / install it
+	using the command [brew install docker] and [brew install docker-machine].
+		->	docker --version
+			Docker version 18.09.0, build 4d60db4
+		->	docker-machine -version
+			docker-machine version 0.16.0, build 702c267f
+
+	DOCKER:
+		Platform for developers and sysadmins to develop, deploy, and run app 
+		with containers. The use of Linux containers to deploy applications is 
+		called containerization.
+
+	IMAGE:
+		Executable package that includes everything needed to run an app:
+		the code, a runtime, libraries, environment variables, and conf files.
+
+	CONTAINER:
+		Runtime instance of an image; what it becomes in memory when executed
+		(that is, an image with state, or a user process). List running
+		containers command [docker ps].
+		It runs natively on Linux and shares the kernel of the host machine with
+		other containers. It runs a discrete process, taking no more memory than
+		any other executable, making it lightweight.
+
+	VIRTUAL MACHINE:
+		It runs a full-blown “guest” OSwith virtual access to host resources
+		through a hypervisor. In general, VMs provide an environment with
+		more resources than most applications need.
+
+	DOCKER MACHINE:
+		It is a tool for provisioning and managing your Dockerized hosts (with
+		Docker Engine on them). You install Docker Machine on your local system.
+		Docker Machine has its own command line client [docker-machine] and
+		the Docker Engine client, [docker]. You can use Machine to install
+		Docker Engine on one or more virtual systems. These virtual systems can
+		be local (as when you use Machine to install and run Docker Engine in 
+		VirtualBox on Mac) or remote (as when you use Machine to provision
+		Dockerized hosts on cloud providers). The Dockerized hosts themselves
+		can be thought of, and are sometimes referred to as, managed “machines”.
+
+
+Saturday, 20th April 2019.
+
+	->	docker info
+
+	To list:
+		->	machines [docker-machine ls]
+		->	images [docker images --all]
+		->	containers [docker ps]
+		->	docker volume ls
+
+	Each time:
+		->	Start the machine [docker-machine start Char]
+		->	Define the general env variables [eval $(docker-machine env Char)]
+
+
+Sunday, 21st April 2019.
+
+	To solve the thing of the storage... actually what I should have done the
+	very first day:
+		->	mv .docker ./goinfre
+		->	ln -s "/Volumes/Storage/goinfre/crfernan/.docker"
+
+
+Monday, 22nd April 2019.
+
+	First part done, exept the exercie 19. Not sure about the last exercises
+	because it should print something of the marines on the logs and it doesn't.
+
+
+Tuesday, 23rd April 2019.
+
+	DOCKERFILE:
+		Text document that contains all the commands a user could call on the
+		command line to assemble an image. Using [docker build] users can create
+		an automated build that executes several command-line instructions in
+		succession.
+
+	Commands:
+		docker build <context=set of files at a specified PATH or URL>
+			->	-f </path/Dockerfile>: point to a Dockerfile somewhere else.
+			->	-t </path/repository>: where to save the new image (can be >1)
+
+	Format:
+		# Comment
+		INSTRUCTION argument
+		Comment:		# Comment
+		Instruction:	INSTRUCTION
+		Argument:		argument
+		Ex:
+			# Whatever
+			RUN echo "hello"
+
+	Syntax:
+		# syntax=docker/dockerfile
+		Only enabled if the BuildKit backend is used. The syntax directive
+		defines the location of the Dockerfile builder that is used for building
+		the current Dockerfile.
+
+	Enviroment variables:
+		ENV whatever /bar
+		Ex:
+			ENV whatever /bar
+			WORKDIR ${whatever}
+			ADD . \${whatever}
+		What happens here is that "/bar" is asigned to "whatever", so the next
+		line will result in WORKDIR /bar. To escape the enviroment variables the
+		backslash can be used: ADD . ${whatever}
+		
+		ENV abc=hello
+		ENV abc=bye def=$abc
+		ENV ghi=$abc
+		This results in abc=bye; def = hello; ghi=bye.
+
+	FROM:
+		FROM <image> [AS <name>]
+		FROM <image>[:<tag>] [AS <name>]
+		FROM <image>[@<digest>] [AS <name>]
+		It initializes a new build stage and sets the Base Image for subsequent
+		instructions, a valid Dockerfile must start with FROM. This instruction
+		can appear multiple times within a single Dockerfile to create multiple
+		images or use one build stage as a dependency for another.
+		Tag is optional, if omitted the builder assumes a latest tag by default.
+		WHAT DA FUCK IS @DIGEST
+
+	RUN:
+		Shell form:		RUN /bin/bash -c <command>
+		Exec form:		RUN ["executable", "param_1", "...", "param_n"]
+		Executes any commands in a new layer on top of the current image and
+		commits the results. The resulting committed image will be used for the
+		next step in the Dockerfile.
+
+	CMD:
+		Exec form:	CMD ["executable","param1","param2"]
+					CMD ["param1","param2"] (default parameters to ENTRYPOINT)
+		Shell form:	CMD command param1 param2
+		The main purpose is to provide defaults for an executing container. When
+		used in the shell or exec formats, the CMD instruction sets the command
+		to be executed when running the image.
+
+	LABEL:
+		LABEL <key>=<value> <key>=<value> <key>=<value> ...
+		Ex:
+			LABEL version="1.0"
+			LABEL description="This text illustrates \
+			that label-values can span multiple lines."
+			LABEL multi.label1="value1" multi.label2="value2" other="value3"
+		LABEL maintainer="CRISPU"
+		Sets the Author field of the generated images.
+
+	EXPOSE:
+		EXPOSE <port> [<port>/<protocol>...]
+		Informs Docker that the container listens on the specified network ports
+		at runtime. You can specify whether the port listens on TCP or UDP, and
+		the default is TCP if the protocol is not specified.
+
+	ADD (for images):
+		ADD <src> ... <src> <dest>
+		ADD [--chown=<user>:<group>] <src>... <dest>
+		ADD [--chown=<user>:<group>] ["<src>",... "<dest>"] (for whitespaces)
+		It copies new files, directories or remote file URLs from <src> and adds
+		them to the filesystem of the image at the path <dest>.
+		New files and directories are created with a UID and GID of 0,
+		unless --chown flag specifies a given UID, GID, or UID/GID combination.
+			Ex: ADD --chown=55:mygroup files* /somedir/
+
+	COPY (for containers):
+		COPY <src> ... <src> <dest>
+		COPY [--chown=<user>:<group>] <src>... <dest>
+		COPY [--chown=<user>:<group>] ["<src>",... "<dest>"] (for whitespaces)
+		It copies new files or directories from <src> and adds them to the
+		filesystem of the container at the path <dest>.
+
+	ENTRYPOINT:
+		Exec form:		ENTRYPOINT ["executable", "param1", "param2"]
+		Shell form:		ENTRYPOINT command param1 param2
+		It allows to configure a container that will run as an executable.
+		THERE'S A LOT OF DOCUMENTATION I DONT UNDERSTAND ANYTHING.
+
+	VOLUME:
+		VOLUME ["/data"]
+		It creates a mount point with the specified name and marks it as holding
+		externally mounted volumes from native host or other containers.
+
+	USER:
+		USER <user>[:<group>] or
+		USER <UID>[:<GID>]
+		Sets the user name (or UID) and optionally the user group (or GID) to
+		use when running the image and for any RUN, CMD and ENTRYPOINT
+		instructions that follow it in the Dockerfile.
+
+	WORKDIR
+		WORKDIR /path/to/workdir
+		Sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD
+		instructions that follow it in the Dockerfile. If the WORKDIR doesn’t
+		exist, it will be created even if it’s not used in any subsequent
+		Dockerfile instruction. The WORKDIR instruction can be used multiple
+		times in a Dockerfile. If a relative path is provided, it will be
+		relative to the path of the previous WORKDIR instruction.
+
+	ARG
+		??
+
+	ONBUILD:
+		ONBUILD [INSTRUCTION]
+		The ONBUILD instruction adds to the image a trigger instruction to be
+		executed at a later time, when the image is used as the base for another
+		build. The trigger will be executed in the context of the downstream
+		build, as if it had been inserted immediately after the FROM instruction.
+
+	STOPSIGNAL:
+		STOPSIGNAL signal
+		The STOPSIGNAL instruction sets the system call signal that will be sent
+		to the container to exit
+
+	HEALTHCHECK:
+	Tells Docker how to test a container to check that it is still working.
+
+	SHELL:
+		SHELL ["executable", "parameters"]
+		Allows the default shell used for the shell form of commands to be
+		overridden. The default shell on Linux is ["/bin/sh", "-c"].
+
+
+
+
+
+
+
+
+
+
+
+
+
+

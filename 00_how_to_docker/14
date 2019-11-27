@@ -1,0 +1,7 @@
+# Ex14
+docker run --name lair -d -p 8080:80 --link spawning-pool:mysql wordpress
+#	Launch a wordpress container: docker run <> wordpress
+#	background task: --detach
+#	The container should be named lair: --name=lair
+#	its 80 port should be bound to the 8080 port of the VM: -p 8080:80
+#	use the spawning-pool container as a DB service: --link spawning-pool:mysql

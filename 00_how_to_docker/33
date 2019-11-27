@@ -1,0 +1,2 @@
+# Ex33
+docker rmi --force $(docker images -aq)

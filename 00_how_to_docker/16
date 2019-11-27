@@ -1,0 +1,2 @@
+# Ex16
+docker logs -f spawning-pool

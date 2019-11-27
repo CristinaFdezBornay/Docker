@@ -1,0 +1,8 @@
+# Ex15
+docker run --detach --name=roach-warden -p 8081:80 --link spawning-pool:db phpmyadmin/phpmyadmin
+
+# Launch a phpmyadmin container: docker run <> phpmyadmin/phpadmin
+# background task: --detach
+# named roach-warden: --name=roach-warden
+# its 80 port should be bound to the 8081 port of the VM: -p 8081:80
+# explore the DB in spawning-pool: --link spawning-pool:db -env MYSQL_ROOT_PASSWORD=Kerrigan

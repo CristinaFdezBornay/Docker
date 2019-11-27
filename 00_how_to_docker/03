@@ -1,0 +1,5 @@
+# Ex03
+eval $(docker-machine env Char)
+
+# When running:
+# . ./03

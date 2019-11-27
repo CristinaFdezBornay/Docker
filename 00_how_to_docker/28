@@ -1,0 +1,5 @@
+# Ex28
+docker service create -e OC_USERNAME=crfernan -e OC_PASSWD=passwd --name marines --replicas=2 --network overmind 42school/marine-squad
+
+# Check
+# docker service logs -f marines

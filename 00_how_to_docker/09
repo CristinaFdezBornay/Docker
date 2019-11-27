@@ -1,0 +1,51 @@
+# Ex09
+
+# Open shell of debian container
+
+docker run -it --rm debian /bin/bash
+
+# we can now check the debian version [cat /etc/debian_version] and
+# update and upgrade all the current packages:
+
+#	->	apt-get update
+#	->	apt-get upgrade
+
+# To be able to writte C files we install the text editor nano:
+
+#	->	apt-get install nano
+
+# We write a file named test.c:
+
+#		root@8f6477eb45b1:/# cat test.c
+#		#include <unistd.h>
+#		int		main(void)
+#		{
+#				write (1, "Hello world!", 12);
+#					return (1);
+#		}
+
+# Then, we need to download the package to compile the file:
+
+#	->	apt-get install gcc
+
+# An now, we can compile the test.c like [gcc test.c] and execute the output [./a.out]
+#	Hello world!
+
+# To push the file test.c onto a repository we need to get the git package installed:
+
+#	->	apt-get install git
+
+# Next I have created a public repository on my Github, so I'll have to clone
+# the repository and configure the git user on my shell:
+
+#	->	git config user.email "cristinafernandezbornay@outlook.com"
+#	->	git config user.name "CristinaFdezBornay"
+
+# Now we can clone, add, commit and push the tes.c onto the repository:
+
+#	->	git clone https://github.com/CristinaFdezBornay/test2Docker09.git REPO
+#	->	git add test.c
+#	->	git commit -m "test.c"
+#	->	git push
+
+# Note: when trying to push, we'll be asked about the github Username and password.

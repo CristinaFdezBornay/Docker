@@ -1,0 +1,5 @@
+docker run -dit --name=Abathur -v ~/:/root -p 3000:3000 python:2-slim sh
+docker exec Abathur pip install Flask
+echo 'from flask import Flask\napp = Flask(__name__)\n\n@app.route("/")\ndef index():\n\treturn ("<h1>Hello World</h1>")\n\nif __name__=="__main__":\n\tapp.run(host="0.0.0.0", port="3000")' > ~/app.py
+docker exec Abathur python /root/app.py
+# tutorial: (https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-i-hello-world)

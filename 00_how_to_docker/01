@@ -1,0 +1,5 @@
+# Ex01
+docker-machine create --driver=virtualbox Char
+
+# Check:
+# docker-machine ls
